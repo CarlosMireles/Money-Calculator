@@ -1,4 +1,4 @@
-package software.ulpgc.moneyCalculator.other;
+package software.ulpgc.moneyCalculator.swing;
 
 import javax.swing.*;
 import javax.swing.plaf.PanelUI;

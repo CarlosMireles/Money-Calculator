@@ -1,4 +1,4 @@
-package software.ulpgc.moneyCalculator.fcs;
+package software.ulpgc.moneyCalculator.currencyBeacon;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -20,20 +20,27 @@ public class currencyBeaconCurrencyLoader implements CurrencyLoader {
     @Override
     public List<Currency> load() {
         try {
-            return toList(loadJson());
+            return getListOFCurrencies(loadJson());
         } catch (IOException e) {
             return emptyList();
         }
     }
 
-    private List<Currency> toList(String json) {
+    private List<Currency> getListOFCurrencies(String json) {
         List<Currency> list = new ArrayList<>();
-        JsonArray symbols = new Gson().fromJson(json, JsonObject.class).get("response").getAsJsonArray();
-        for (JsonElement symbol : symbols) {
-            Map<String, JsonElement> currencyJson = symbol.getAsJsonObject().asMap();
+        for (JsonElement currency : getJsonArrayFromJson(json)) {
+            Map<String, JsonElement> currencyJson = currencyJsonToMap(currency);
             list.add(new Currency(currencyJson.get("short_code").getAsString(), currencyJson.get("name").getAsString()));
         }
         return list;
+    }
+
+    private JsonArray getJsonArrayFromJson(String json){
+        return new Gson().fromJson(json, JsonObject.class).get("response").getAsJsonArray();
+    }
+
+    private Map<String, JsonElement> currencyJsonToMap(JsonElement element){
+        return element.getAsJsonObject().asMap();
     }
 
     private String loadJson() throws IOException {

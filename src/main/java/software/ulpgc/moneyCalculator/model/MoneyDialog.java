@@ -1,2 +1,8 @@
-package software.ulpgc.moneyCalculator.model;public interface MoneyDialog {
+package software.ulpgc.moneyCalculator.model;
+
+import java.util.List;
+
+public interface MoneyDialog {
+    MoneyDialog define(List<Currency> currencies);
+    Money get();
 }
